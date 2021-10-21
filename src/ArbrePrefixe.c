@@ -61,7 +61,8 @@ void afficher_ArbrePrefixe(arbrePrefixe a){
 
 void insererMot_ArbrePrefixe(arbrePrefixe a, char* s){
   arbrePrefixe b = a;
-  for(int k=0;k<strlen(s);k++){
+  int k;
+  for(k=0;k<strlen(s);k++){
     b = add_fils(b,s[k]);
   }
   b=add_fils(b,'\0');
@@ -69,7 +70,9 @@ void insererMot_ArbrePrefixe(arbrePrefixe a, char* s){
 
 bool est_present_arbrePrefixe(arbrePrefixe a, char* s){
   arbrePrefixe b = a;
-  for(int k=0;k<strlen(s);k++){
+  int k;
+  for(k=0;k<strlen(s);k++){
+    if(s[k]>122 || s[k]<97){return true;}//cas ou il y a une majuscule ou une ponctuation=>on part du principe qu'il est francais
     if((b = descendre_arbrePrefixe(b,s[k]))==NULL){return false;}//cas ou un lettre n'est pas dans l'arbre
   }
   if((b = descendre_arbrePrefixe(b,s[strlen(s)]))==NULL){
@@ -100,41 +103,29 @@ void detruire_arbrePrefixe(arbrePrefixe* n){
   if(n==NULL){return ;}
   //cas arbre sans fils
   noeudPrefixe* q = *n;
-  noeudPrefixe* p1 = (*n)->fils;
+  noeudPrefixe* p1 = q->fils;
   if(p1==NULL){detruire_noeudarbrePrefixe(q);return;}
   //cas arbre avec fils
   noeudPrefixe* p2 = p1->frere;
   while(!arbre_est_vide(p2)){//on détruit les arbres commencant par les fils (sauf le dernier)
-    detruire_arbrePrefixe(&p1->fils);
+    detruire_arbrePrefixe(&(p1));
     p1=p2;
     p2=p2->frere;
   }
-  detruire_noeudarbrePrefixe(p1);//on détruit le dernier fils
+  detruire_arbrePrefixe(&p1);//on détruit le dernier fils
   detruire_noeudarbrePrefixe(q);//on détruit enfin la racine
-  n=NULL;//on met a jour la nouvelle valeur de a
+  *n=NULL;//on met a jour la nouvelle valeur de a
 }
 
+arbrePrefixe creation_arbrePrefixe(FILE* f){
+  arbrePrefixe a =creer_noeud('#');
+  char s[30];
+  while(fscanf(f,"%s",s)!=EOF){//lit le mot
+    //printf("%s\n",s);//affiche le mot lu
+    insererMot_ArbrePrefixe(a,s);
+    //afficher_ArbrePrefixe(a);
+  }
+  printf("graph rempli\n");
+  return a;
 
-
-/*
-
-pour détruire un arbre :
-
--on appel le fct pour détruire la racine
-  - elle est vide => on fait rien
-  - pas de frere => détruit la racine
-  - elle a un ou plusieurs fils => - on détruit 1 par 1 chaque arbre commencant par ses fils
-                                   - on détruit la racine
-
-
-
-
-
-
-
-
-
-
-
-
-*/
+}

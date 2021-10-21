@@ -27,7 +27,7 @@ LDFLAGS= -lm
 
 #Les executables que l'on veut construire: a la fois ceux des tests et ceux des programmes finaux
 #exemple : EXEDIR=$(BINDIR)/pccmain $(BINDIR)/test_algo $(BINDIR)/test_algoTempo  $(BINDIR)/test_list $(BINDIR)/list $(BINDIR)/graph $(BINDIR)/arc $(BINDIR)/test_edge $(BINDIR)/test_readprint $(BINDIR)/test_hashtable $(BINDIR)/test_space $(BINDIR)/space $(BINDIR)/test_affichage
-EXEDIR=$(BINDIR)/Test_ArbrePrefixe $(BINDIR)/ArbrePrefixe
+EXEDIR=$(BINDIR)/Test_ArbrePrefixe $(BINDIR)/ArbrePrefixe $(BINDIR)/Test_remplirArbre
 #Les fichiers binaire : ajouter les noms des nouveaux fichiers ici (pas les test)
 OBJ=$(OBJDIR)/ArbrePrefixe.o
 
@@ -40,6 +40,9 @@ all: $(EXEDIR)
 
 #pour construire le test test_edge qui utilise arc.o
 $(BINDIR)/Test_ArbrePrefixe : $(OBJ) $(OBJDIR)/Test_ArbrePrefixe.o
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+$(BINDIR)/Test_remplirArbre : $(OBJ) $(OBJDIR)/Test_remplirArbre.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 

@@ -14,10 +14,10 @@ int main(){
   printf("beh présent ? : %d\n",est_present_arbrePrefixe(A,"beh"));
   puts("**********");
   afficher_ArbrePrefixe(A);
-  A = descendre_arbrePrefixe(A,'x');
+  /*A = descendre_arbrePrefixe(A,'x');
   A = descendre_arbrePrefixe(A,'t');
   puts("");puts("NOUVEAU A");
-  afficher_ArbrePrefixe(A);
+  afficher_ArbrePrefixe(A);*/
   detruire_arbrePrefixe(&A);
   afficher_ArbrePrefixe(A);
   assert(A==NULL);

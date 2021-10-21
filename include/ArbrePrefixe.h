@@ -42,3 +42,4 @@ bool est_present_arbrePrefixe(arbrePrefixe a, char* s);
 void detruire_noeudarbrePrefixe(noeudPrefixe* n);
 void detruire_arbrePrefixe(arbrePrefixe* a);
 //creation d'un graph a partir d'un fichier
+arbrePrefixe creation_arbrePrefixe(FILE* f);
