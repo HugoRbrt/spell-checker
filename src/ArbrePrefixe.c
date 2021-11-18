@@ -1,5 +1,7 @@
 #include "ArbrePrefixe.h"
 
+int COMPTEUR2=0;
+
 noeudPrefixe* creer_noeud(char caractere){
   noeudPrefixe* n = malloc(sizeof(noeudPrefixe));
   n->valeur = caractere;//chaque noeud comporte un caractère
@@ -73,6 +75,8 @@ bool est_present_arbrePrefixe(arbrePrefixe a, char* s){
   int k;
   for(k=0;k<strlen(s);k++){
     if(s[k]>122 || s[k]<97){return true;}//cas ou il y a une majuscule ou une ponctuation=>on part du principe qu'il est francais
+  }
+  for(k=0;k<strlen(s);k++){
     if((b = descendre_arbrePrefixe(b,s[k]))==NULL){return false;}//cas ou un lettre n'est pas dans l'arbre
   }
   if((b = descendre_arbrePrefixe(b,s[strlen(s)]))==NULL){
@@ -122,10 +126,11 @@ arbrePrefixe creation_arbrePrefixe(FILE* f){
   char s[30];
   while(fscanf(f,"%s",s)!=EOF){//lit le mot
     //printf("%s\n",s);//affiche le mot lu
-    insererMot_ArbrePrefixe(a,s);
+      insererMot_ArbrePrefixe(a,s);COMPTEUR2++;
     //afficher_ArbrePrefixe(a);
   }
   printf("graph rempli\n");
+  printf("nb mot ajoute : %d",COMPTEUR2);getchar();getchar();
   return a;
 
 }

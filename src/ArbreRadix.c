@@ -1,5 +1,7 @@
 #include "ArbreRadix.h"
 
+int COMPTEUR=0;
+int VAL3=1;
 //TESTÉ
 
 
@@ -22,12 +24,15 @@ bool possede_fils_ArbreRadix(noeudRadix p){
   return p.fils!=NULL;
 }
 void insererMot_ArbreRadix(arbreRadix a, char* s){
-  if(!est_present_arbreRadix(a,s)){//si le mot n'est pas présent dans l'arbre on l'ajoute
-    recInsertion_ArbreRadix(a,s);
-  }
+  /*if(!est_present_arbreRadix(a,s)){//si le mot n'est pas présent dans l'arbre on l'ajoute
+      recInsertion_ArbreRadix(a,s);
+}*/
+  recInsertion_ArbreRadix(a,s);
+  COMPTEUR++;
 }
 
 void recInsertion_ArbreRadix(arbreRadix a, char* c){
+  if(c==NULL){return;}
   if(!possede_fils_ArbreRadix(*a)){//si a n'a pas de fils, on ajoute un fils ayant le string c
    add_fils_ArbreRadix(a,creer_noeud_ArbreRadix(c));
   }
@@ -127,10 +132,11 @@ char* Retire_l_caracteres(char* c, int l, bool liberer){
   if(l==strlen(c)){return NULL;}
   char* c2 = malloc(strlen(c) - l );//-l pour les l lettres retirés
   int s = strlen(c);
-  for(int k=0;k<s-l;k++){
+  int k;
+  for(k=0;k<s-l;k++){
     c2[k] = c[l+k];
   }
-
+  c2[strlen(c)-l]='\0';
   if(liberer){free(c);}
   return c2;
 }
@@ -162,15 +168,19 @@ arbreRadix descendre_arbreRadix(arbreRadix a,char* c){
 }
 
 bool est_present_arbreRadix(arbreRadix a, char* c){
+  int k;
+  for(k=0;k<strlen(c);k++){
+    if(c[k]>122 || c[k]<97){if(VAL3==1){VAL3=0;}return true;}//cas ou il y a une majuscule ou une ponctuation=>on part du principe qu'il est francais
+  }
   char* s = strdup(c);
   strcat(s,"#");
   arbreRadix b = a;
   int len_b=0;
-
   while(b!=NULL && s!=NULL){
     b = descendre_arbreRadix(b,s);
     if(b!=NULL){len_b = strlen(b->valeur);}
-    if(len_b<=strlen(s)){s = Retire_l_caracteres(s,len_b,1);}
+    else{len_b=0;}
+    if(len_b<=strlen(s)){s = Retire_l_caracteres(s,len_b,0);}
   }
   return s==NULL;
 }
@@ -189,13 +199,13 @@ void afficher_ArbreRadix(arbreRadix a){
 arbreRadix creation_arbreRadix(FILE* f){
   arbreRadix a =creer_noeud_ArbreRadix("");
   char s[30];
-  int compteur=0;
   while(fscanf(f,"%s",s)!=EOF){//lit le mot
     //printf("%s\n",s);//affiche le mot lu
-    insererMot_ArbreRadix(a,s);compteur++;printf("%s\n",s);
+    insererMot_ArbreRadix(a,s);COMPTEUR++;
     //afficher_ArbreRadix(a);
   }
   printf("graph rempli\n");
+  printf("nb mot ajoute : %d",COMPTEUR);getchar();getchar();
   return a;
 
 }

@@ -7,6 +7,7 @@
 #include <float.h>
 #include <math.h>
 
+
 typedef struct noeud_R{
   char* valeur;//chaque noeud comporte un String
   struct noeud_R *fils;
