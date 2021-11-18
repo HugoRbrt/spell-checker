@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <float.h>
+#include <math.h>
 
 typedef struct noeud_p{
   char valeur;
@@ -37,7 +39,6 @@ void insererMot_ArbrePrefixe(arbrePrefixe a, char* s);
 bool est_present_arbrePrefixe(arbrePrefixe a, char* s);
 
 
-// A FAIRE :
 //suppression d'un arbre
 void detruire_noeudarbrePrefixe(noeudPrefixe* n);
 void detruire_arbrePrefixe(arbrePrefixe* a);

@@ -2,7 +2,7 @@
 
 noeudPrefixe* creer_noeud(char caractere){
   noeudPrefixe* n = malloc(sizeof(noeudPrefixe));
-  n->valeur = caractere;
+  n->valeur = caractere;//chaque noeud comporte un caractère
   n->fils=NULL;//gauche=fils
   n->frere=NULL;//droite=frere
   return n;
@@ -118,7 +118,7 @@ void detruire_arbrePrefixe(arbrePrefixe* n){
 }
 
 arbrePrefixe creation_arbrePrefixe(FILE* f){
-  arbrePrefixe a =creer_noeud('#');
+  arbrePrefixe a =creer_noeud('#');//noeud source, on a choisi ce caractère abritrairement
   char s[30];
   while(fscanf(f,"%s",s)!=EOF){//lit le mot
     //printf("%s\n",s);//affiche le mot lu
