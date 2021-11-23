@@ -29,7 +29,7 @@ LDFLAGS= -lm
 #exemple : EXEDIR=$(BINDIR)/pccmain $(BINDIR)/test_algo $(BINDIR)/test_algoTempo  $(BINDIR)/test_list $(BINDIR)/list $(BINDIR)/graph $(BINDIR)/arc $(BINDIR)/test_edge $(BINDIR)/test_readprint $(BINDIR)/test_hashtable $(BINDIR)/test_space $(BINDIR)/space $(BINDIR)/test_affichage
 EXEDIR=$(BINDIR)/Test_ArbrePrefixe $(BINDIR)/Test_ArbreRadix $(BINDIR)/Test_remplirArbre $(BINDIR)/Test_remplirtabhash $(BINDIR)/Test_list
 #Les fichiers binaire : ajouter les noms des nouveaux fichiers ici (pas les test)
-OBJ=$(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/list.o
+OBJ=$(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/list.o $(OBJDIR)/hashtable.o
 
 #Pour construire tous les executables
 all: $(EXEDIR)
