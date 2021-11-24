@@ -8,12 +8,12 @@ int main(int argc, char* argv[])
 {
 //Personnalisation du test a effectuer
     //demande du mode de graphe à réaliser
-    int mode=2;
-    //while(mode<1 || mode>2){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.ArbreRadix\n3.pasFait...\n");scanf("%d",&mode);}
+    int mode=0;
+    while(mode<1 || mode>2){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.ArbreRadix\n3.pasFait...\n");scanf("%d",&mode);}
 
     //quantité de mot à rechercher (si on en cherche)
     int pourcent_mot=0;
-    //while(pourcent_mot<1 || pourcent_mot>100){printf("\nquel proportion du dico souhaitez vous lire ? (entre 1 et 100 compris) ");scanf("%d",&pourcent_mot);}
+    while(pourcent_mot<1 || pourcent_mot>100){printf("\nquel proportion du dico souhaitez vous lire ? (entre 1 et 100 compris) ");scanf("%d",&pourcent_mot);}
     int nb_recherche_max=NB_MOT_DICO*pourcent_mot/100;
 
     //mesure du temps d'execution
