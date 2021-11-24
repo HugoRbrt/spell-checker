@@ -21,21 +21,18 @@ void detruire_arbre(arbrePrefixe* a){
   }
 }
 
-bool possede_frere(noeudPrefixe p){
-  return p.frere!=NULL;
-}
-bool possede_fils(noeudPrefixe p){
-  return p.fils!=NULL;
-}
 
 arbrePrefixe add_fils(arbrePrefixe source , char c){
-  if(arbre_est_vide(source->fils)){source->fils=creer_noeud(c);return source->fils;}//cas ou il n'y a pas de fils
-  arbrePrefixe p = source->fils;
+  if(arbre_est_vide(source->fils)){//si pas de fils : on  ajoute le fils et on le retourne
+    source->fils=creer_noeud(c);
+    return source->fils;
+  }
+  arbrePrefixe p = source->fils;//si il y a un fils :
   while(!arbre_est_vide(p->frere)){
-    if(p->valeur == c){return p;}
+    if(p->valeur == c){return p;}//si on rencontre un fils identique à celui qu'on veut ajouter, on retourne le maillon existante
     p=p->frere;
   }
-  if(p->valeur!=c){
+  if(p->valeur!=c){//si on a parcouru toute la liste de frère sans trouvé le maillon c, on l'ajoute à la fin de la liste
     p->frere = creer_noeud(c);
     return p->frere;
   }
@@ -43,8 +40,8 @@ arbrePrefixe add_fils(arbrePrefixe source , char c){
 }
 arbrePrefixe descendre_arbrePrefixe(arbrePrefixe a,char c){
   arbrePrefixe p =a->fils;
-  while(p!=NULL ){
-    if(p->valeur == c){return p;}
+  while(p!=NULL ){//on parcours tous les fils
+    if(p->valeur == c){return p;}//si un des fils contient c, on le retourne
     p = p->frere;
   }
   return p;//pas trouvé donc return NULL
@@ -52,9 +49,9 @@ arbrePrefixe descendre_arbrePrefixe(arbrePrefixe a,char c){
 
 void afficher_ArbrePrefixe(arbrePrefixe a){
   if(!arbre_est_vide(a)){
-    printf("->%c",a->valeur);
+    printf("->%c",a->valeur);//on affiche la racine
     arbrePrefixe b = a->fils;
-    while(b!=NULL){//on refait pareil pour chaque sous graph
+    while(b!=NULL){//on affiche tous les fils de la racinen
       afficher_ArbrePrefixe(b);
       b = b->frere;
     }
@@ -65,22 +62,23 @@ void insererMot_ArbrePrefixe(arbrePrefixe a, char* s){
   arbrePrefixe b = a;
   int k;
   for(k=0;k<strlen(s);k++){
-    b = add_fils(b,s[k]);
+    b = add_fils(b,s[k]);//on ajoute chaques caractère 1 à 1 en descendant dans le graph
   }
   b=add_fils(b,'\0');
 }
 
 bool est_present_arbrePrefixe(arbrePrefixe a, char* s){
   arbrePrefixe b = a;
-  int k;
-  for(k=0;k<strlen(s);k++){
-    if(s[k]>122 || s[k]<97){return true;}//cas ou il y a une majuscule ou une ponctuation=>on part du principe qu'il est francais
+  int k, compteur=0;
+  int l = strlen(s);if(l==0){return true;}//un mùot vide est dans l'arbre
+  if(s[0]==34 || s[0]==40){return est_present_arbrePrefixe(a,s+1);}//si le mot commence par ( ou " on refait pareil sans ce caractère
+  while(s[l-1]==44 || s[l-1]==46 || s[l-1]==40 || s[l-1]==41 || s[l-1]==34 || s[l-1]==45 ){s[l-1]='\0';l--;}//on enlève tous les caractère , . (  " - à la fin du mot
+  if(l==0){return true;}
+  for(k=0;k<l;k++){
+    if(s[k]<97){return true;}//cas ou il y a lattre majuscule ou chiffre ou ;:<>=?@_^[]\/'-    =>on part du principe qu'il est francais
   }
-  for(k=0;k<strlen(s);k++){
+  for(k=0;k<l+1;k++){
     if((b = descendre_arbrePrefixe(b,s[k]))==NULL){return false;}//cas ou un lettre n'est pas dans l'arbre
-  }
-  if((b = descendre_arbrePrefixe(b,s[strlen(s)]))==NULL){
-    return false;
   }
   return true;
 }
@@ -88,19 +86,6 @@ bool est_present_arbrePrefixe(arbrePrefixe a, char* s){
 void detruire_noeudarbrePrefixe(noeudPrefixe* n){
   free(n);
 }
-/*
-void detruire_listearbrePrefixe(noeudPrefixe* n){
-  if(n==NULL){return ;}//cas liste vide
-  noeudPrefixe* p = n->frere;
-  noeudPrefixe* q = n;
-  while(!arbre_est_vide(p)){//on les detruit tous sauf le dernier
-    detruire_noeudarbrePrefixe(*q);
-    q = p;
-    p=p->frere;
-  }
-  detruire_noeudarbrePrefixe(q);//on détruit le dernier
-  n=NULL;
-}*/
 
 void detruire_arbrePrefixe(arbrePrefixe* n){
   //cas arbre vide
@@ -123,14 +108,11 @@ void detruire_arbrePrefixe(arbrePrefixe* n){
 
 arbrePrefixe creation_arbrePrefixe(FILE* f){
   arbrePrefixe a =creer_noeud('#');//noeud source, on a choisi ce caractère abritrairement
-  char s[30];
+  char s[30];//on mot est de taille <30caractères normalement
   while(fscanf(f,"%s",s)!=EOF){//lit le mot
-    //printf("%s\n",s);//affiche le mot lu
       insererMot_ArbrePrefixe(a,s);COMPTEUR2++;
-    //afficher_ArbrePrefixe(a);
   }
   printf("graph rempli\n");
-  printf("nb mot ajoute : %d",COMPTEUR2);getchar();getchar();
   return a;
 
 }

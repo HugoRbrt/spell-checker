@@ -1,12 +1,7 @@
 #include "ArbreRadix.h"
 
 int COMPTEUR=0;
-int VAL3=1;
-//TESTÉ
 
-
-
-//FAIT
 noeudRadix* creer_noeud_ArbreRadix(char* caractere){
   noeudRadix* n = malloc(sizeof(noeudRadix));
   n->valeur = strdup(caractere);
@@ -23,128 +18,25 @@ bool possede_frere_ArbreRadix(noeudRadix p){
 bool possede_fils_ArbreRadix(noeudRadix p){
   return p.fils!=NULL;
 }
-void insererMot_ArbreRadix(arbreRadix a, char* s){
-  /*if(!est_present_arbreRadix(a,s)){//si le mot n'est pas présent dans l'arbre on l'ajoute
-      recInsertion_ArbreRadix(a,s);
-}*/
-  recInsertion_ArbreRadix(a,s);
-  COMPTEUR++;
-}
-
-void recInsertion_ArbreRadix(arbreRadix a, char* c){
-  if(c==NULL){return;}
-  if(!possede_fils_ArbreRadix(*a)){//si a n'a pas de fils, on ajoute un fils ayant le string c
-   add_fils_ArbreRadix(a,creer_noeud_ArbreRadix(c));
-  }
-  else{
-    int l;
-    bool fin_while=0;
-    noeudRadix* f = a->fils;
-    while(f->frere!=NULL && !fin_while){
-//deb
-      l = contient_prefixe_ArbreRadix(*f,c);
-      if(l!=0){//si le noeud contient un prefixe de s
-        char* c2 = Retire_l_caracteres(c,l,0);//c2 correspond à c sans le prefixe commun à f et c
-        if(l == strlen(f->valeur)){//si ce prefixe correspond à tout le noeud, on insert c2 dans ce noeud
-          recInsertion_ArbreRadix(f,c2);
-        }
-        else{//si le prefixe ne correspond qu'à une partie du noeud, il faut : modifié le noeud actuel pour qu'il ne contienne
-             //que le prefixe et qu'ils pointent vers 2 fils : 1 correspondant au reste des lettres de c, et un correspondant
-             //au reste des lettres du noeud (en conservant les fils d'origines)
-          noeudRadix* fils0 = creer_noeud_ArbreRadix("#");//noeud disant que la branche jusqu'à fils 1 correspond à 1 mot
-          fils0->frere = NULL;
-          fils0->fils  = NULL;
-          noeudRadix* fils1 = creer_noeud_ArbreRadix(c2);//noeud contenant le reste des lettres de c
-          fils1->frere = NULL;
-          fils1->fils  = fils0;
-          noeudRadix* fils2 = creer_noeud_ArbreRadix(Retire_l_caracteres(f->valeur,l,0));//noeud contenant le reste des lettres
-          fils2->frere = fils1;                                                       //du noeud d'origine (et pointant vers
-          fils2->fils  = f->fils;                                                      //les fils d'origine et ayanbt pour frere le noeud précédent)
-          char* c3 = strndup(f->valeur,l);//le noeud n possède alors plus que le prefixe en commun
-          f->valeur = c3;
-          f->fils   = fils2; //il pointe vers les deux fils en commun
-        }
-        fin_while= 1;
-      }
-      else{fin_while= 0;}
-//fi
-      if(!fin_while){f = f->frere;}
-    }
-    if(f->frere==NULL){//on refait sur le dernire frere si on a toujours pas trouvé de préfixe commun
-
-
-//deb
-      int l = contient_prefixe_ArbreRadix(*f,c);
-      if(l!=0){//si le noeud contient un prefixe de s
-        char* c2 = Retire_l_caracteres(c,l,0);//c2 correspond à c sans le prefixe commun à f et c
-        if(l == strlen(f->valeur)){//si ce prefixe correspond à tout le noeud, on insert c2 dans ce noeud
-          recInsertion_ArbreRadix(f,c2);
-        }
-        else{//si le prefixe ne correspond qu'à une partie du noeud, il faut : modifié le noeud actuel pour qu'il ne contienne
-             //que le prefixe et qu'ils pointent vers 2 fils : 1 correspondant au reste des lettres de c, et un correspondant
-             //au reste des lettres du noeud (en conservant les fils d'origines)
-          noeudRadix* fils0 = creer_noeud_ArbreRadix("#");//noeud disant que la branche jusqu'à fils 1 correspond à 1 mot
-          fils0->frere = NULL;
-          fils0->fils  = NULL;
-          noeudRadix* fils1 = creer_noeud_ArbreRadix(c2);//noeud contenant le reste des lettres de c
-          fils1->frere = NULL;
-          fils1->fils  = fils0;
-          noeudRadix* fils2 = creer_noeud_ArbreRadix(Retire_l_caracteres(f->valeur,l,0));//noeud contenant le reste des lettres
-          fils2->frere = fils1;                                                       //du noeud d'origine (et pointant vers
-          fils2->fils  = f->fils;                                                      //les fils d'origine et ayanbt pour frere le noeud précédent)
-          char* c3 = strndup(f->valeur,l);//le noeud n possède alors plus que le prefixe en commun
-          f->valeur = c3;
-          f->fils   = fils2; //il pointe vers les deux fils en commun
-        }
-        fin_while= 1;
-      }
-      else{fin_while= 0;}
-//fi
-      if(!fin_while){//si aucun frere n'a de prefixe commun avec c, on ajoute un frere
-
-      f->frere = creer_noeud_ArbreRadix(c);
-      f->frere->fils = creer_noeud_ArbreRadix("#");
-
-      }
-    }
-  }
-}
-
-int contient_prefixe_ArbreRadix(noeudRadix p, char* s){
-  char c_p = p.valeur[0];
-  char c_s = s[0];
+int taille_prefixe_commun_ArbreRadix(char* p, char* s){
+  char caractere_p = p[0];
+  char caractere_s = s[0];
   bool diff = 0;//prend 1 lorsque 2 caractères comparés sont différents
-  int cpt = 0;//compteur de lettre identique
-  while(c_s!='\0' && c_p!='\0' && !diff){
-    if(c_s!=c_p){diff=1;}
+  int cpt_char_identique = 0;//compteur de lettre identique
+  while(caractere_s!='\0' && caractere_p!='\0' && !diff){//tant qu'on est pas arrivé à la fin d'un des string et qu'ils n'ont pas différé
+    if(caractere_s!=caractere_p){diff=1;}//si il diffère on arrête le while
     else{
-      cpt++;
-      c_p = p.valeur[cpt];
-      c_s = s[cpt];
+      cpt_char_identique++;//si ils sont identioque on avance de 1 caractère et on augmente le compteur de caractère identique de 1
+      caractere_p = p[cpt_char_identique];
+      caractere_s = s[cpt_char_identique];
     }
   }
-  return cpt;
+  return cpt_char_identique;
 }
-
-char* Retire_l_caracteres(char* c, int l, bool liberer){
-  assert(l<=strlen(c));
-  if(l>strlen(c)){return NULL;}
-  if(l==strlen(c)){return NULL;}
-  char* c2 = malloc(strlen(c) - l );//-l pour les l lettres retirés
-  int s = strlen(c);
-  int k;
-  for(k=0;k<s-l;k++){
-    c2[k] = c[l+k];
-  }
-  c2[strlen(c)-l]='\0';
-  if(liberer){free(c);}
-  return c2;
-}
-
 void add_fils_ArbreRadix(arbreRadix source , noeudRadix* noeud){
   if(source->fils==NULL){//si il n'y a pas de fils, on n'a qu'à la mettre comme 1er fils
     source->fils = noeud;
-    noeud->fils = creer_noeud_ArbreRadix("#");
+    noeud->fils = creer_noeud_ArbreRadix("#");//pour siognifier qu'il s'agit bien de la fin d'un mot
   }
   else{//si il existe au moins un fils
     noeudRadix* f = source->fils;
@@ -155,34 +47,94 @@ void add_fils_ArbreRadix(arbreRadix source , noeudRadix* noeud){
   }
 }
 
+void recInsertion_ArbreRadix(arbreRadix a, char* c){
+  if(c==NULL || strlen(c)<1){//si on veut ajouter un c null cela veut dire qu'on a consommé tout le mot donc il faut ajoute rla feuille "#"
+    add_fils_ArbreRadix(a,creer_noeud_ArbreRadix("#"));
+  }//si mot vide on ne l'ajoute pas
+  if(!possede_fils_ArbreRadix(*a)){//si a n'a pas de fils, on ajoute un fils ayant le string c
+   add_fils_ArbreRadix(a,creer_noeud_ArbreRadix(c));
+  }
+  else{//si a à au moins 1 fils
+    int l;
+    bool modif_faite=0,tous_frere_parcouru=0, dernier_frere=0;
+    noeudRadix* f = a->fils;
+    if(f->frere==NULL){dernier_frere=1;}
+
+    while(0==tous_frere_parcouru && !modif_faite){//tant qu'on a pas parcouru tous les fraires et qu'on a fait aucune insertion :
+      if(dernier_frere==1){tous_frere_parcouru=1;}//si on est au dernier frere, on signal que c'est la derniere fois qu'on parcours le while
+      l = taille_prefixe_commun_ArbreRadix(f->valeur,c);
+
+      if(l!=0){//si le noeud contient un prefixe de s
+        char* c2 = Retire_l_caracteres(c,l,0);//c2 correspond à c sans le prefixe commun à f et c
+        if(l == strlen(f->valeur)){//si ce prefixe correspond à tout le noeud, on insert c2 dans ce noeud
+          recInsertion_ArbreRadix(f,c2);
+        }
+        else{
+             /*si le prefixe ne correspond qu'à une partie du noeud, il faut : modifier le noeud actuel pour qu'il ne contienne
+             que le prefixe et qu'ils pointent vers 2 fils : 1 correspondant au reste des lettres de c, et un correspondant
+             au reste des lettres du noeud (en conservant ses fils d'origines)*/
+          noeudRadix* feuille = creer_noeud_ArbreRadix("#");//noeud disant que la branche jusqu'à fils 1 correspond à 1 mot
+          feuille->frere = NULL;
+          feuille->fils  = NULL;
+          noeudRadix* reste_c = creer_noeud_ArbreRadix(c2);//noeud contenant le reste des lettres de c
+          reste_c->frere = NULL;
+          reste_c->fils  = feuille;
+          char* c_reste_noeud = Retire_l_caracteres(f->valeur,l,0);
+          noeudRadix* reste_noeud = creer_noeud_ArbreRadix(c_reste_noeud);//noeud contenant le reste des lettres
+          free(c_reste_noeud);
+          reste_noeud->frere = reste_c;                                                       //du noeud d'origine (et pointant vers
+          reste_noeud->fils  = f->fils;                                                      //les fils d'origine et ayanbt pour frere le noeud précédent)
+          char* prefixe = strndup(f->valeur,l);//le noeud n possède alors plus que le prefixe en commun
+          free(f->valeur);
+          f->valeur = prefixe;
+          f->fils   = reste_noeud; //il pointe vers les deux fils en commun
+        }
+        free(c2);
+        modif_faite= 1;
+      }
+
+      if(!modif_faite && 0==tous_frere_parcouru){//on passe au suivant si aucune modif n'est faite et qu'on a pas encore parcouru tous les frères
+        f = f->frere;
+        if(f->frere==NULL){dernier_frere=1;}//si on est au dernier élémént alors on va refaire la while pour la derniere fois
+      }
+    }
+    if(!modif_faite){//si aucun frere n'a de prefixe commun avec c, on ajoute un frere
+    f->frere = creer_noeud_ArbreRadix(c);
+    f->frere->fils = creer_noeud_ArbreRadix("#");
+    }
+  }
+}
+
+//char* par malloc
+char* Retire_l_caracteres(char* c, int l, bool liberer){
+  assert(l<=strlen(c));
+  if(l==strlen(c)){
+    if(liberer){free(c);}//avant de quitter la fonction on libère si c'est demandé
+    return NULL;//on a retirer tous les caractères de c
+  }
+  char* c2 = malloc(strlen(c) - l+1 );//-l pour les l lettres retirés
+  int l_c = strlen(c);
+  int k;
+  for(k=0;k<l_c-l;k++){
+    c2[k] = c[l+k];
+  }
+  c2[strlen(c)-l]='\0';
+
+  if(liberer){free(c);}
+  return c2;
+}
+
+
 arbreRadix descendre_arbreRadix(arbreRadix a,char* c){
   arbreRadix p =a->fils;
-  while(p!=NULL ){
+  while(p!=NULL){//tant qu'on a pas fait tous les freres et qu'on a pas trouvé le bon noeud
     char* s = strndup(c,strlen(p->valeur));
     if(strcmp(p->valeur,s) == 0){free(s);return p;}
     free(s);
     if(p->valeur[0]==c[0]){return NULL;}//si il commencait par la même lettre mais ils sont différents alors aucun frere ne convidendra (car chaques frere commence par une lettre differente)
     p = p->frere;
   }
-  return p;//pas trouvé donc return NULL
-}
-
-bool est_present_arbreRadix(arbreRadix a, char* c){
-  int k;
-  for(k=0;k<strlen(c);k++){
-    if(c[k]>122 || c[k]<97){if(VAL3==1){VAL3=0;}return true;}//cas ou il y a une majuscule ou une ponctuation=>on part du principe qu'il est francais
-  }
-  char* s = strdup(c);
-  strcat(s,"#");
-  arbreRadix b = a;
-  int len_b=0;
-  while(b!=NULL && s!=NULL){
-    b = descendre_arbreRadix(b,s);
-    if(b!=NULL){len_b = strlen(b->valeur);}
-    else{len_b=0;}
-    if(len_b<=strlen(s)){s = Retire_l_caracteres(s,len_b,0);}
-  }
-  return s==NULL;
+  return p;//on retourne soit le noeud trouvé soit NULL car on est en fin de liste de frere
 }
 
 void afficher_ArbreRadix(arbreRadix a){
@@ -196,56 +148,54 @@ void afficher_ArbreRadix(arbreRadix a){
   }
 }
 
+bool est_present_arbreRadix(arbreRadix a, char* c){
+  arbreRadix b = a;
+  int k;
+//cas spéciaux de ponctuations, majuscule, mot vide...
+  int l = strlen(c);if(l==0){return true;}//un mot vide est dans l'arbre
+  if(c[0]==34 || c[0]==40){return est_present_arbreRadix(a,c+1);}//si le mot commence par ( ou " on refait pareil sans ce caractère
+  while(c[l-1]==44 || c[l-1]==46 || c[l-1]==40 || c[l-1]==41 || c[l-1]==34 || c[l-1]==45 ){c[l-1]='\0';l--;}//on enlève tous les caractère , . (  " - à la fin du mot
+  if(strlen(c)==0){return true;}//si les actions on vidé le mot, alors il est dans l'arbre (pour ne pas considérer les ponctuations isolés commes non francais)
+  for(k=0;k<l;k++){
+    if(c[k]<97){return true;}//cas ou il y a lattre majuscule ou chiffre ou ;:<>=?@_^[]\/'-    =>on part du principe qu'il est francais
+  }
+//recherche dans le graph
+  char* s2 = strdup(c);
+  char *s = malloc(strlen(s2) + 1 + 1 );
+  strcpy(s,s2);
+  s[strlen(s2)]='#';
+  s[strlen(s2)+1]='\0';
+  free(s2);
+
+  //strcat(s,"#");//on ajoute le # qui symbolise la fin du mot dans l'arbre
+  int len_b=0;
+  while(b!=NULL && s!=NULL){
+    b = descendre_arbreRadix(b,s);
+    if(b!=NULL){len_b = strlen(b->valeur);}
+    else{len_b=0;}
+    if(len_b<=strlen(s)){s = Retire_l_caracteres(s,len_b,1);}
+  }
+  bool est_present = s==NULL;
+  free(s);
+  return est_present;
+}
+
 arbreRadix creation_arbreRadix(FILE* f){
   arbreRadix a =creer_noeud_ArbreRadix("");
   char s[30];
   while(fscanf(f,"%s",s)!=EOF){//lit le mot
-    //printf("%s\n",s);//affiche le mot lu
-    insererMot_ArbreRadix(a,s);COMPTEUR++;
-    //afficher_ArbreRadix(a);
+    recInsertion_ArbreRadix(a,s);
   }
   printf("graph rempli\n");
-  printf("nb mot ajoute : %d",COMPTEUR);getchar();getchar();
   return a;
 
 }
-//A FAIRE
 
-
-
-
-
-
-/*
-void detruire_arbre(arbreRadix* a){
-  if(!arbre_est_vide_ArbreRadix(*a)){
-    detruire_arbre(&((*a)->fils));
-    detruire_arbre(&((*a)->frere));
-    free(*a);
-    *a=NULL;
-  }
+void detruire_arbreRadix(arbreRadix* a){
+  //on détruit le fils
+  if(possede_fils_ArbreRadix(**a)){detruire_arbreRadix(&((*a)->fils));}
+  //on détruit son frère le plus proche
+  if(possede_frere_ArbreRadix(**a)){detruire_arbreRadix(&((*a)->frere));}
+  free((*a)->valeur);
+  free(*a);
 }
-
-void detruire_noeudarbreRadix(noeudRadix* n){
-  free(n);
-}
-
-void detruire_arbreRadix(arbreRadix* n){
-  //cas arbre vide
-  if(n==NULL){return ;}
-  //cas arbre sans fils
-  noeudRadix* q = *n;
-  noeudRadix* p1 = q->fils;
-  if(p1==NULL){detruire_noeudarbreRadix(q);return;}
-  //cas arbre avec fils
-  noeudRadix* p2 = p1->frere;
-  while(!arbre_est_vide_ArbreRadix(p2)){//on détruit les arbres commencant par les fils (sauf le dernier)
-    detruire_arbreRadix(&(p1));
-    p1=p2;
-    p2=p2->frere;
-  }
-  detruire_arbreRadix(&p1);//on détruit le dernier fils
-  detruire_noeudarbreRadix(q);//on détruit enfin la racine
-  *n=NULL;//on met a jour la nouvelle valeur de a
-}
-*/

@@ -51,8 +51,8 @@ $(BINDIR)/Test_ArbreRadix : $(OBJDIR)/ArbreRadix.o $(OBJDIR)/Test_ArbreRadix.o
 $(BINDIR)/Test_remplirArbre : $(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/Test_remplirArbre.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-	$(BINDIR)/Test_remplirtabhash : $(OBJDIR)/hashtable.o $(OBJDIR)/list.o $(OBJDIR)/Test_remplirtabhash.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+$(BINDIR)/Test_remplirtabhash : $(OBJDIR)/hashtable.o $(OBJDIR)/list.o $(OBJDIR)/Test_remplirtabhash.o
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 # pour construire les fichiers binaires .o
 $(OBJDIR)/%.o : $(TEST)/%.c

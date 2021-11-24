@@ -11,8 +11,8 @@ int main(int argc, char* argv[])
   if (f==NULL) { printf("Impossible d’ouvrir le fichier\n"); exit(EXIT_FAILURE);}
 
   //recherche du mode à réaliser
-  int mode=0;
-  while(mode<1 || mode>2){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.pas Fait...\n3.pasFait...\n");scanf("%d",&mode);}
+  int mode=2;
+  //while(mode<1 || mode>2){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.pas Fait...\n3.pasFait...\n");scanf("%d",&mode);}
   if(mode==1){
     //creation du graph à partir du dictionnaire:
     arbrePrefixe a = creation_arbrePrefixe(f);
@@ -25,7 +25,9 @@ int main(int argc, char* argv[])
     char s[30];//car un mot de dépasse jamais plus de 30 caractères
     int compteur=0;
     while(fscanf(f2,"%s",s)!=EOF){//lit le mot
-      if(est_present_arbrePrefixe(a,s)==0){printf("%s   ",s);compteur++;}//affiche le mot si il est faux
+      if(est_present_arbrePrefixe(a,s)==0){
+        //printf("%s\n",s);
+        compteur++;}//affiche le mot si il est faux
     }
     printf("\nnombre de mot pas francais : %d\n",compteur);
     puts("*fin*");
@@ -35,8 +37,7 @@ int main(int argc, char* argv[])
   }
   if(mode==2){
     //creation du graph à partir du dictionnaire:
-    arbreRadix a = creation_arbreRadix(f);printf("FAIT\n");/*
-    getchar();
+    arbreRadix a = creation_arbreRadix(f);
     fclose(f);//fermeture du dictionnaire car il ne sert plus a rien
     //ouverture fichier a corriger
     FILE* f2;
@@ -46,13 +47,15 @@ int main(int argc, char* argv[])
     char s[30];//car un mot de dépasse jamais plus de 30 caractères
     int compteur =0;
     while(fscanf(f2,"%s",s)!=EOF){//lit le mot
-      if(est_present_arbreRadix(a,s)==0){printf("%s   ",s);compteur++;}//affiche le mot si il est faux
+      if(est_present_arbreRadix(a,s)==0){
+        //printf("%s\n",s);
+        compteur++;}//affiche le mot si il est faux
     }
     printf("\nnombre de mot pas francais : %d\n",compteur);
     puts("*fin*");
-    fclose(f2);*/
-    printf("amantes présent ? : %d\n",est_present_arbreRadix(a,"amantes"));
+    fclose(f2);
+
     //suppression graph
-    //detruire_arbreRadix(&a);
+    detruire_arbreRadix(&a);
   }
 }
