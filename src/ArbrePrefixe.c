@@ -1,6 +1,5 @@
 #include "ArbrePrefixe.h"
 
-int COMPTEUR2=0;
 
 noeudPrefixe* creer_noeud(char caractere){
   noeudPrefixe* n = malloc(sizeof(noeudPrefixe));
@@ -109,10 +108,24 @@ void detruire_arbrePrefixe(arbrePrefixe* n){
 arbrePrefixe creation_arbrePrefixe(FILE* f){
   arbrePrefixe a =creer_noeud('#');//noeud source, on a choisi ce caractère abritrairement
   char s[30];//on mot est de taille <30caractères normalement
+  int cpt=0;
   while(fscanf(f,"%s",s)!=EOF){//lit le mot
-      insererMot_ArbrePrefixe(a,s);COMPTEUR2++;
+
+      insererMot_ArbrePrefixe(a,s);cpt++;
   }
-  printf("graph rempli\n");
+  printf("nombre de mot dans le graphe : %d",cpt);
+  return a;
+
+}
+
+arbrePrefixe creation_arbrePrefixe_borne(FILE* f,int borne){
+  arbrePrefixe a =creer_noeud('#');//noeud source, on a choisi ce caractère abritrairement
+  char s[30];//on mot est de taille <30caractères normalement
+  int cpt=0;
+  while(cpt<borne && fscanf(f,"%s",s)!=EOF){//lit le mot
+
+      insererMot_ArbrePrefixe(a,s);cpt++;
+  }
   return a;
 
 }

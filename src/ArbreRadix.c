@@ -183,10 +183,21 @@ bool est_present_arbreRadix(arbreRadix a, char* c){
 arbreRadix creation_arbreRadix(FILE* f){
   arbreRadix a =creer_noeud_ArbreRadix("");
   char s[30];
+  int cpt=0;
   while(fscanf(f,"%s",s)!=EOF){//lit le mot
-    recInsertion_ArbreRadix(a,s);
+    recInsertion_ArbreRadix(a,s);cpt++;
   }
-  printf("graph rempli\n");
+  printf("nombre de mot dans le graphe : %d",cpt);
+  return a;
+
+}
+arbreRadix creation_arbreRadix_borne(FILE* f,int borne){
+  arbreRadix a =creer_noeud_ArbreRadix("");
+  char s[30];
+  int cpt=0;
+  while(cpt<borne && fscanf(f,"%s",s)!=EOF){//lit le mot
+    recInsertion_ArbreRadix(a,s);cpt++;
+  }
   return a;
 
 }
