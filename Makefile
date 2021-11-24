@@ -39,19 +39,19 @@ all: $(EXEDIR)
 #	$(CC) -o $@ $^ $(LDFLAGS)
 
 #pour construire le test test_edge qui utilise arc.o
-$(BINDIR)/Test_list : $(OBJ) $(OBJDIR)/Test_list.o
+$(BINDIR)/Test_list : $(OBJDIR)/list.o $(OBJDIR)/Test_list.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BINDIR)/Test_ArbrePrefixe : $(OBJ) $(OBJDIR)/Test_ArbrePrefixe.o
+$(BINDIR)/Test_ArbrePrefixe : $(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/Test_ArbrePrefixe.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BINDIR)/Test_ArbreRadix : $(OBJ) $(OBJDIR)/Test_ArbreRadix.o
+$(BINDIR)/Test_ArbreRadix : $(OBJDIR)/ArbreRadix.o $(OBJDIR)/Test_ArbreRadix.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BINDIR)/Test_remplirArbre : $(OBJ) $(OBJDIR)/Test_remplirArbre.o
+$(BINDIR)/Test_remplirArbre : $(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/Test_remplirArbre.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-	$(BINDIR)/Test_remplirtabhash : $(OBJ) $(OBJDIR)/Test_remplirtabhash.o
+	$(BINDIR)/Test_remplirtabhash : $(OBJDIR)/hashtable.o $(OBJDIR)/list.o $(OBJDIR)/Test_remplirtabhash.o
 		$(CC) -o $@ $^ $(LDFLAGS)
 
 # pour construire les fichiers binaires .o
