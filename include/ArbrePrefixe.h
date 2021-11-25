@@ -40,3 +40,5 @@ void detruire_arbrePrefixe(arbrePrefixe* a);
 
 //creation d'un graph a partir d'un fichier
 arbrePrefixe creation_arbrePrefixe(FILE* f);
+//pareil mais avec seulement les borne 1er mot (pour mesure performances)
+arbrePrefixe creation_arbrePrefixe_borne(FILE* f, int borne);

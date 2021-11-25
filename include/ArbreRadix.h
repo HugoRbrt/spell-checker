@@ -40,5 +40,7 @@ bool est_present_arbreRadix(arbreRadix a, char* c);
 void afficher_ArbreRadix(arbreRadix a);
 //renvoie un nouvel arbre en fonction du contenu de f
 arbreRadix creation_arbreRadix(FILE* f);
+//pareil mais avec seulement les bornes 1er mots (pour mesure performance)
+arbreRadix creation_arbreRadix_borne(FILE* f,int borne);
 //liberation de tout l'arbreradix
 void detruire_arbreRadix(arbreRadix* a);
