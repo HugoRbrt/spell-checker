@@ -56,4 +56,24 @@ int main(int argc, char* argv[])
     //suppression graph
     detruire_arbreRadix(&a);
   }
+  if(mode==3){
+    creation_listDict(f);
+    //ouverture fichier a corriger
+    FILE* f2;
+    f2=fopen("a_la_recherche_du_temps_perdu.txt","r");
+    if (f2==NULL) { printf("Impossible d’ouvrir le fichier\n"); exit(EXIT_FAILURE);}
+    //recherche des mots faux
+    char s[30];//car un mot de dépasse jamais plus de 30 caractères
+    int compteur=0;
+    while(fscanf(f2,"%s",s)!=EOF){//lit le mot
+      if(!list_contains(s,listDic)){
+          compteur++;
+      }//affiche le mot si il est faux
+    }
+    printf("\nnombre de mot pas francais : %d\n",compteur);
+    puts("*fin*");
+    fclose(f2);
+    //suppression graph
+    list_free(&listDic);
+  }
 }

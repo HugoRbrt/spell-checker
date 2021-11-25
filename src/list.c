@@ -65,3 +65,33 @@ void list_free(list* liste){
     *liste=list_parc;
   }
 }
+
+list creation_listDict(FILE* f){
+  list listDic=newList();
+  char buffer[30];
+  while((fscanf(f,"%s",buffer))!=EOF){
+      list_add(buffer,&listDic);
+    }
+    printf("affichage du dictionnaire\n");
+  list_print(listDic);
+    printf("fin du dictionnaire\n");
+
+  fclose(f);//fermeture du dictionnaire car il ne sert plus a rien
+  return listDict;
+
+}
+
+list creation_listDict_borne(FILE* f,int borne){
+  list listDic=newList();
+  int cpt=0;
+  char buffer[30];
+  while(cpt<borne && ((fscanf(f,"%s",buffer))!=EOF)){
+      list_add(buffer,&listDic);
+    }
+    printf("affichage du dictionnaire\n");
+    list_print(listDic);
+    printf("fin du dictionnaire\n");
+
+  fclose(f);//fermeture du dictionnaire car il ne sert plus a rien
+  return listDict;
+}
