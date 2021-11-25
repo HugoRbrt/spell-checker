@@ -87,6 +87,7 @@ list creation_listDict_borne(FILE* f,int borne){
   int cpt=0;
   char buffer[30];
   while(cpt<borne && ((fscanf(f,"%s",buffer))!=EOF)){
+    cpt++;
       list_add(buffer,&listDic);
     }
     printf("affichage du dictionnaire\n");
