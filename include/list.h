@@ -6,9 +6,9 @@
 typedef struct maillon_{
   char* string;
   struct maillon_* next;
-}maillon;
+}maillon, * list;
 
-typedef maillon* list;
+
 list newList();
 
 void list_add(char* newstring,list* liste);
