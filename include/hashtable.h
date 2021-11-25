@@ -8,7 +8,7 @@ typedef struct _hashtable{
 
 void free_hashtable(hashtable* hashtab);
 
-void remplir_dico( FILE* f,hashtable hashtab);
+hashtable remplir_dico( FILE* f,hashtable hashtab);
 
 void add_to_hashtab(char* string,hashtable hashtab);
 

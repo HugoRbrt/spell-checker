@@ -27,9 +27,9 @@ LDFLAGS= -lm
 
 #Les executables que l'on veut construire: a la fois ceux des tests et ceux des programmes finaux
 #exemple : EXEDIR=$(BINDIR)/pccmain $(BINDIR)/test_algo $(BINDIR)/test_algoTempo  $(BINDIR)/test_list $(BINDIR)/list $(BINDIR)/graph $(BINDIR)/arc $(BINDIR)/test_edge $(BINDIR)/test_readprint $(BINDIR)/test_hashtable $(BINDIR)/test_space $(BINDIR)/space $(BINDIR)/test_affichage
-EXEDIR=$(BINDIR)/Test_ArbrePrefixe $(BINDIR)/Test_ArbreRadix $(BINDIR)/Test_remplirArbre $(BINDIR)/Test_remplirtabhash $(BINDIR)/Test_list $(BINDIR)/verif_ortho
+EXEDIR=$(BINDIR)/Test_ArbrePrefixe $(BINDIR)/Test_ArbreRadix $(BINDIR)/Test_listDict $(BINDIR)/Test_list $(BINDIR)/verif_ortho
 #Les fichiers binaire : ajouter les noms des nouveaux fichiers ici (pas les test)
-OBJ=$(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/list.o $(OBJDIR)/hashtable.o
+OBJ=$(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/list.o
 
 #Pour construire tous les executables
 all: $(EXEDIR)
@@ -48,13 +48,13 @@ $(BINDIR)/Test_ArbrePrefixe : $(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/Test_ArbrePrefi
 $(BINDIR)/Test_ArbreRadix : $(OBJDIR)/ArbreRadix.o $(OBJDIR)/Test_ArbreRadix.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BINDIR)/Test_remplirtabhash : $(OBJDIR)/hashtable.o $(OBJDIR)/list.o $(OBJDIR)/Test_remplirtabhash.o
+$(BINDIR)/Test_listDict: $(OBJDIR)/Test_listDict.o $(OBJDIR)/list.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BINDIR)/Test_remplirArbre : $(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/Test_remplirArbre.o
+$(BINDIR)/Test_remplirArbre : $(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/list.o $(OBJDIR)/Test_remplirArbre.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(BINDIR)/verif_ortho : $(OBJDIR)/ArbrePrefixe.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/verif_ortho.o
+$(BINDIR)/verif_ortho : $(OBJDIR)/ArbrePrefixe.o  $(OBJDIR)/list.o $(OBJDIR)/ArbreRadix.o $(OBJDIR)/verif_ortho.o 
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 # pour construire les fichiers binaires .o

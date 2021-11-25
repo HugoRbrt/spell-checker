@@ -1,6 +1,6 @@
 #include "ArbrePrefixe.h"
 #include "ArbreRadix.h"
-
+#include "list.h"
 int main(int argc, char* argv[])
 {
   //ouverture fichier dictionnaire
@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 
   //recherche du mode à réaliser
   int mode=0;
-  while(mode<1 || mode>2){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.pas Fait...\n3.pasFait...\n");scanf("%d",&mode);}
+  while(mode<1 || mode>3){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.pas Fait...\n3.pasFait...\n");scanf("%d",&mode);}
   if(mode==1){
     //creation du graph à partir du dictionnaire:
     arbrePrefixe a = creation_arbrePrefixe(f);
@@ -57,17 +57,19 @@ int main(int argc, char* argv[])
     detruire_arbreRadix(&a);
   }
   if(mode==3){
-    creation_listDict(f);
+    list listDic=creation_listDict(f);
+    fclose(f);//fermeture du dictionnaire car il ne sert plus a rien
     //ouverture fichier a corriger
     FILE* f2;
-    f2=fopen("a_la_recherche_du_temps_perdu.txt","r");
+    f2=fopen(argv[2],"r");
     if (f2==NULL) { printf("Impossible d’ouvrir le fichier\n"); exit(EXIT_FAILURE);}
     //recherche des mots faux
     char s[30];//car un mot de dépasse jamais plus de 30 caractères
     int compteur=0;
     while(fscanf(f2,"%s",s)!=EOF){//lit le mot
       if(!list_contains(s,listDic)){
-          compteur++;
+        printf("%s\n",s);
+        compteur++;
       }//affiche le mot si il est faux
     }
     printf("\nnombre de mot pas francais : %d\n",compteur);
