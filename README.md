@@ -1,5 +1,7 @@
 # TP_CorrecteurOrthographique
 
+Au début il faut créer 3 répertoires : test, bin et obj. Ils serviront par la suite pour le Makefile.
+
 ! il faut mettre tous les fichiers text dans le dossier text !
 
 ➞ Pour lancer le correcteur il faut utiliser le test "verif_ortho.c", pour cela :
