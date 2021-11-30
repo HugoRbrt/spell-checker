@@ -3,6 +3,7 @@
 int COMPTEUR=0;
 
 noeudRadix* creer_noeud_ArbreRadix(char* caractere){
+  if (caractere==NULL){return NULL;}
   noeudRadix* n = malloc(sizeof(noeudRadix));
   n->valeur = strdup(caractere);
   n->fils=NULL;//gauche=fils
@@ -19,6 +20,7 @@ bool possede_fils_ArbreRadix(noeudRadix p){
   return p.fils!=NULL;
 }
 int taille_prefixe_commun_ArbreRadix(char* p, char* s){
+  if(s==NULL || p==NULL){return 0;}
   char caractere_p = p[0];
   char caractere_s = s[0];
   bool diff = 0;//prend 1 lorsque 2 caractères comparés sont différents
@@ -69,7 +71,7 @@ void recInsertion_ArbreRadix(arbreRadix a, char* c){
         if(l == strlen(f->valeur)){//si ce prefixe correspond à tout le noeud, on insert c2 dans ce noeud
           recInsertion_ArbreRadix(f,c2);
         }
-        else{
+        else {
              /*si le prefixe ne correspond qu'à une partie du noeud, il faut : modifier le noeud actuel pour qu'il ne contienne
              que le prefixe et qu'ils pointent vers 2 fils : 1 correspondant au reste des lettres de c, et un correspondant
              au reste des lettres du noeud (en conservant ses fils d'origines)*/
@@ -77,8 +79,10 @@ void recInsertion_ArbreRadix(arbreRadix a, char* c){
           feuille->frere = NULL;
           feuille->fils  = NULL;
           noeudRadix* reste_c = creer_noeud_ArbreRadix(c2);//noeud contenant le reste des lettres de c
+          if(reste_c!=NULL){
           reste_c->frere = NULL;
           reste_c->fils  = feuille;
+          }
           char* c_reste_noeud = Retire_l_caracteres(f->valeur,l,0);
           noeudRadix* reste_noeud = creer_noeud_ArbreRadix(c_reste_noeud);//noeud contenant le reste des lettres
           free(c_reste_noeud);
@@ -100,16 +104,16 @@ void recInsertion_ArbreRadix(arbreRadix a, char* c){
     }
     if(!modif_faite){//si aucun frere n'a de prefixe commun avec c, on ajoute un frere
     f->frere = creer_noeud_ArbreRadix(c);
-    f->frere->fils = creer_noeud_ArbreRadix("#");
+    if(f->frere!=NULL){f->frere->fils = creer_noeud_ArbreRadix("#");}
     }
   }
 }
 
-//char* par malloc
 char* Retire_l_caracteres(char* c, int l, bool liberer){
   assert(l<=strlen(c));
   if(l==strlen(c)){
-    if(liberer){free(c);}//avant de quitter la fonction on libère si c'est demandé
+    if(liberer){free(c);
+    }//avant de quitter la fonction on libère si c'est demandé
     return NULL;//on a retirer tous les caractères de c
   }
   char* c2 = malloc(strlen(c) - l+1 );//-l pour les l lettres retirés
@@ -152,9 +156,10 @@ bool est_present_arbreRadix(arbreRadix a, char* c){
   arbreRadix b = a;
   int k;
 //cas spéciaux de ponctuations, majuscule, mot vide...
-  int l = strlen(c);if(l==0){return true;}//un mot vide est dans l'arbre
+  int l = strlen(c);
+  if(l==0){return true;}//un mot vide est dans l'arbre
   if(c[0]==34 || c[0]==40){return est_present_arbreRadix(a,c+1);}//si le mot commence par ( ou " on refait pareil sans ce caractère
-  while(c[l-1]==44 || c[l-1]==46 || c[l-1]==40 || c[l-1]==41 || c[l-1]==34 || c[l-1]==45 ){c[l-1]='\0';l--;}//on enlève tous les caractère , . (  " - à la fin du mot
+  while(l>0 && (c[l-1]==44 || c[l-1]==46 || c[l-1]==40 || c[l-1]==41 || c[l-1]==34 || c[l-1]==45 )){c[l-1]='\0';l--;}//on enlève tous les caractère , . (  " - à la fin du mot
   if(strlen(c)==0){return true;}//si les actions on vidé le mot, alors il est dans l'arbre (pour ne pas considérer les ponctuations isolés commes non francais)
   for(k=0;k<l;k++){
     if(c[k]<97){return true;}//cas ou il y a lattre majuscule ou chiffre ou ;:<>=?@_^[]\/'-    =>on part du principe qu'il est francais
@@ -191,13 +196,14 @@ arbreRadix creation_arbreRadix(FILE* f){
   return a;
 
 }
-arbreRadix creation_arbreRadix_borne(FILE* f,int borne){
+arbreRadix creation_arbreRadix_borne(FILE* f,float borne){
   arbreRadix a =creer_noeud_ArbreRadix("");
   char s[30];
   int cpt=0;
-  while(cpt<borne && fscanf(f,"%s",s)!=EOF){//lit le mot
-    recInsertion_ArbreRadix(a,s);cpt++;
+  while(fscanf(f,"%s",s)!=EOF){//lit le mot
+    if(rand()%10000<100*borne){recInsertion_ArbreRadix(a,s);cpt++;}
   }
+  printf("compteur = %d",cpt);
   return a;
 
 }

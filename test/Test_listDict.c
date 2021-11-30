@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     char s[30];//car un mot de dépasse jamais plus de 30 caractères
     int compteur=0;
     int cpt_temp=0;
-    while(cpt_temp<20000 && fscanf(f2,"%s",s)!=EOF){//lit le mot
+    while(cpt_temp<20000 && fscanf(f2,"%s",s)!=EOF){//lit le mot, on se limite à 2000 mots pour que ce ne soit pas torp long
       cpt_temp++;
       if(!list_contains(s,listDic)){
         printf("%s\n",s);

@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 
   //recherche du mode à réaliser
   int mode=0;
-  while(mode<1 || mode>3){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.pas Fait...\n3.pasFait...\n");scanf("%d",&mode);}
+  while(mode<1 || mode>3){printf("entrez le graph voulu :\n1.ArbrePrefixe\n2.ArbreRadix\n3.Liste (très lent, environ 30 minutes !)\n");scanf("%d",&mode);}
   if(mode==1){
     //creation du graph à partir du dictionnaire:
     arbrePrefixe a = creation_arbrePrefixe(f);
@@ -23,9 +23,10 @@ int main(int argc, char* argv[])
     char s[30];//car un mot de dépasse jamais plus de 30 caractères
     int compteur=0;
     while(fscanf(f2,"%s",s)!=EOF){//lit le mot
+      compteur++;
       if(est_present_arbrePrefixe(a,s)==0){
         printf("%s, ",s);
-        compteur++;}//affiche le mot si il est faux
+        }//affiche le mot si il est faux
     }
     printf("\nnombre de mot pas francais : %d\n",compteur);
     puts("*fin*");

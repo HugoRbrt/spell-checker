@@ -13,15 +13,14 @@ int main(int argc, char* argv[])
     int nb_mot_recherche=-1;
     if(mode==3 ){while(nb_mot_recherche<0){printf("combien de mot voulez vous rechercher ? ");scanf("%d",&nb_mot_recherche);}}
     //quantité de mot à rechercher (si on en cherche)
-    int pourcent_mot=0;
-    while(pourcent_mot<1 || pourcent_mot>100){printf("\nquel proportion du dico souhaitez vous lire ? (entre 1 et 100 compris) ");scanf("%d",&pourcent_mot);}
-    int nb_recherche_max=NB_MOT_DICO*pourcent_mot/100;
+    float pourcent_mot=-1;
+    while(pourcent_mot<0 || pourcent_mot>100){printf("\nquel proportion du dico souhaitez vous lire ? (entre 0 et 100 compris) ");scanf("%f",&pourcent_mot);}
+    int nb_recherche_max= NB_MOT_DICO*pourcent_mot/100;
 
     //mesure du temps d'execution
     int chrono=-1;
     while(chrono<0||chrono>4){printf("\nde quelle fonction souhaitez vous connaitre le temps d'execution ?\n0.ne pas mesurer de temps\n1.creation du graph\n2.recherche des mots dans le graphe\n3.destruction\n4.tout\n");scanf("%d",&chrono);}
     clock_t temps;
-
 //realisation du test
 
 
@@ -57,7 +56,7 @@ int main(int argc, char* argv[])
   if(mode==2){
     if(chrono==1 || chrono==4){temps=clock();}
     //creation du graph à partir du dictionnaire:
-    arbreRadix a = creation_arbreRadix_borne(f,nb_recherche_max);
+    arbreRadix a = creation_arbreRadix_borne(f,pourcent_mot);
     if(chrono==1){temps=clock()-temps;}
     fclose(f);//fermeture du dictionnaire car il ne sert plus a rien
     //ouverture fichier a corriger
@@ -72,6 +71,7 @@ int main(int argc, char* argv[])
       if(est_present_arbreRadix(a,s)==0){
         compteur++;}//affiche le mot si il est faux
     }if(chrono==2){temps=clock()-temps;}
+    printf("nb de mots faux : %d",compteur);
     fclose(f2);
 
     //suppression graph

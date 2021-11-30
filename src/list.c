@@ -75,9 +75,6 @@ list creation_listDict(FILE* f){
   while((fscanf(f,"%s",buffer))!=EOF){
       list_add(buffer,&listDic);
     }
-    printf("affichage du dictionnaire\n");
-  list_print(listDic);
-    printf("fin du dictionnaire\n");
   return listDic;
 
 }
@@ -90,8 +87,5 @@ list creation_listDict_borne(FILE* f,int borne){
     cpt++;
       list_add(buffer,&listDic);
     }
-    printf("affichage du dictionnaire\n");
-    list_print(listDic);
-    printf("fin du dictionnaire\n");
   return listDic;
 }

@@ -69,9 +69,17 @@ void insererMot_ArbrePrefixe(arbrePrefixe a, char* s){
 bool est_present_arbrePrefixe(arbrePrefixe a, char* s){
   arbrePrefixe b = a;
   int k, compteur=0;
+  int cointinuer=1;
   int l = strlen(s);if(l==0){return true;}//un mùot vide est dans l'arbre
   if(s[0]==34 || s[0]==40){return est_present_arbrePrefixe(a,s+1);}//si le mot commence par ( ou " on refait pareil sans ce caractère
-  while(s[l-1]==44 || s[l-1]==46 || s[l-1]==40 || s[l-1]==41 || s[l-1]==34 || s[l-1]==45 ){s[l-1]='\0';l--;}//on enlève tous les caractère , . (  " - à la fin du mot
+  if(s!=""){
+    while(l>0 && cointinuer==1 ){
+      if(s[l-1]==44 || s[l-1]==46 || s[l-1]==40 || s[l-1]==41 || s[l-1]==34 || s[l-1]==45){
+        s[l-1]='\0';l--;
+      }
+      else{cointinuer=0;}
+    }
+  }//on enlève tous les caractère , . (  " - à la fin du mot
   if(l==0){return true;}
   for(k=0;k<l;k++){
     if(s[k]<97){return true;}//cas ou il y a lattre majuscule ou chiffre ou ;:<>=?@_^[]\/'-    =>on part du principe qu'il est francais
