@@ -72,7 +72,7 @@ bool est_present_arbrePrefixe(arbrePrefixe a, char* s){
   int cointinuer=1;
   int l = strlen(s);if(l==0){return true;}//un mùot vide est dans l'arbre
   if(s[0]==34 || s[0]==40){return est_present_arbrePrefixe(a,s+1);}//si le mot commence par ( ou " on refait pareil sans ce caractère
-  if(s!=""){
+  if(strcmp(s,"")!=0){
     while(l>0 && cointinuer==1 ){
       if(s[l-1]==44 || s[l-1]==46 || s[l-1]==40 || s[l-1]==41 || s[l-1]==34 || s[l-1]==45){
         s[l-1]='\0';l--;
