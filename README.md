@@ -29,3 +29,9 @@ Au début il faut créer 3 répertoires : test, bin et obj. Ils serviront par la
 	- depuis le terminal dans le fichier tp : 
 	- exécuter la commande : make bin/Test_ArbreRadix
 	- puis : ./bin/Test_ArbreRadix
+-----------------------------------------------------------------------------
+Complément : 
+➞ Utiliser les commandes suivantes pour obtenir l'empreinte mémoire d'un programme : (avec la fin du nom du fichier à la place de "PID")
+valgrind --tool=massif ./bin/verif_ortho text/FR.txt text/a_la_recherche_du_temps_perdu.txt 
+ms_print massif.out.PID
+➞ Utilise le préfixe time avant la commande d'exécution pour obtenir le temps d'exécution d'un exécutable.
